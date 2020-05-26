@@ -1,0 +1,32 @@
+$mobile: (
+    'breakpoints': (
+        'sm': 480px,
+        'md': 768px,
+        'lg': 1024px,
+    ),
+    'container': (
+        'sm': 420px,
+        'md': 720px,
+        'lg': 960px
+    ),
+);
+
+$gutter: 30px;
+
+$family--default: Avenir, Helvetica, Arial, sans-serif;
+$family--primary: Calibri, sans-serif;
+
+$weight--tiny: 300;
+$weight--regular: 400;
+$weight--bold: 400;
+
+$color--text: #c7c7c7;
+$color--text-light: #ffffff;
+$color--base: #182139;
+$color--primary: #313852;
+$color--accent: #ffbb33;
+$color--positive: #26A69A;
+$color--negative: #c10015;
+$color--info: #31ccec;
+
+

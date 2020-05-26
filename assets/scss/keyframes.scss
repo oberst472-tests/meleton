@@ -1,0 +1,34 @@
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(0.5);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.fade-enter-active, .fade-leave-active {
+    @include md() {
+        transition: opacity 0.3s;
+    }
+}
+
+.fade-enter, .fade-leave-to {
+    display: none;
+    @include md() {
+        opacity: 0;
+    }
+}
+
+.layout-fade-enter-active, .layout-fade-leave-active {
+    transition: opacity 0.3s ease;
+}
+.layout-fade-enter, .layout-fade-leave-to {
+    opacity: 0;
+}
