@@ -17,6 +17,11 @@ html, body {
     background-color: $color--base;
 }
 
+#__nuxt,
+#__layout {
+    height: 100%;
+}
+
 .main-layout {
     font-family: $family--default;
     color: $color--text;

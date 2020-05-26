@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1590528666367,
+        "title": "пиво",
+        "translate_title": "pivo",
+        "price": 1545,
+        "date_of_purchase": 1590528666367,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laboriosam, libero."
+    },
+    {
+        "id": 1590528838941,
+        "title": "рыба",
+        "translate_title": "ryiba",
+        "price": 1200,
+        "date_of_purchase": 1590528838941,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit."
+    },
+    {
+        "id": 1590528879448,
+        "title": "мыло хозяйственное",
+        "translate_title": "myilo hozyaistvennoye",
+        "price": 645,
+        "date_of_purchase": 1590528879448,
+        "description": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor"
+    },
+    {
+        "id": 1590529006456,
+        "title": "орешки",
+        "translate_title": "oreshki",
+        "price": 999,
+        "date_of_purchase": 1590529006456,
+        "description": "Lorem ipsum dolor sit amet"
+    }
+]

@@ -1,11 +1,24 @@
 <template>
-    <div class="container">
-        <h1>{{ title }}</h1>
-    </div>
+    <section class="page-main">
+        <div class="wrap">
+            <h1 class="page-main__title">{{ title }}</h1>
+            <div class="page-main__content">
+                <BlockProduct class="page-main__content-product" v-for="item in items" :key="item.index" :info="item"/>
+            </div>
+<!--            <BlockPagination-->
+<!--                class="view-users__pagination"-->
+<!--                :info="items.length"-->
+<!--                @click="goToPage"-->
+<!--            />-->
+        </div>
+    </section>
 </template>
 
 <script>
-    import Logo from '~/components/Logo.vue'
+    import products from '@/mocks/products'
+    import {mapState} from 'vuex'
+    import BlockProduct from '@/components/blocks/product'
+    // import BlockPagination from '@/components/blocks/pagination'
 
     export default {
         head() {
@@ -14,45 +27,42 @@
             }
         },
         components: {
-            Logo
+            BlockProduct,
+            // BlockPagination
+        },
+        fetch ({store}) {
+            store.dispatch('products/stAddItems', products)
         },
         data() {
             return {
                 title: 'Все продукты'
             }
         },
+        computed: {
+            ...mapState('products', ['items']),
+        },
+        methods: {
+
+        }
     }
 </script>
 
-<style>
-    .container {
-        margin: 0 auto;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
+<style lang="scss" scoped>
+    .page-main {
+        &__title {
+            text-align: center;
+            padding: $gutter 0;
+            font-size: 22px;
 
-    .title {
-        font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-        'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        display: block;
-        font-weight: 300;
-        font-size: 100px;
-        color: #35495e;
-        letter-spacing: 1px;
-    }
 
-    .subtitle {
-        font-weight: 300;
-        font-size: 42px;
-        color: #526488;
-        word-spacing: 5px;
-        padding-bottom: 15px;
-    }
-
-    .links {
-        padding-top: 15px;
+        }
+        &__content {
+            display: flex;
+            justify-content: space-between;
+            &-product {
+                width: 100%;
+                max-width: 48%;
+            }
+        }
     }
 </style>
