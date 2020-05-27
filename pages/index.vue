@@ -2,10 +2,11 @@
     <section class="page-main">
         <div class="wrap">
             <h1 class="page-main__title">{{ title }}</h1>
-            <div class="page-main__content">
-                <UiLoading v-if="isLoading || $fetchState.pending"/>
-                <BlockProduct class="page-main__content-product" v-for="item in items" :key="item.index" :info="item"/>
+            <div class="page-main__content" v-if="items.length">
+                <UiLoading v-if="isLoading"/>
+                <BlockProduct :info="item" :key="item.index" @delete="deleteProduct" @goToPage="goTo" class="page-main__content-product" v-for="item in items"/>
             </div>
+            <span v-else class="page-main__mock-text">Нет продуктов :(</span>
             <BlockPagination
                 class="page-main__pagination"
                 :length="totalNumber"
@@ -20,7 +21,7 @@
 
 <script>
     import products from '@/mocks/products'
-    import {mapState, mapActions} from 'vuex'
+    import {mapActions, mapState} from 'vuex'
     import BlockProduct from '@/components/blocks/product'
     import BlockPagination from '@/components/blocks/pagination'
     import BlockForm from '@/components/blocks/form'
@@ -36,15 +37,13 @@
             BlockPagination,
             BlockForm
         },
-        async fetch (context) {
-            this.isLoading = true
-            let page = context.query.page || 0
+        async fetch({store, query}) {
+            let page = query.page || 1;
             try {
-                await context.store.dispatch('products/stAddItems', {page, limit: 2})
+                await store.dispatch('products/stAddItems', {page, limit: 2})
             } catch (e) {
                 console.log(e)
             } finally {
-                this.isLoading = false
             }
         },
         data() {
@@ -57,13 +56,26 @@
             ...mapState('products', ['items', 'totalNumber', 'isFormActive']),
         },
         methods: {
-            ...mapActions('products', ['stAddItems', 'changeFormActive', 'stAddNewProduct']),
+            ...mapActions('products', ['stAddItems', 'changeFormActive', 'stAddNewProduct', 'stDeleteProduct']),
             async goToPage(val) {
+                this.isLoading = true;
                 this.$router.push({name: 'index', query: {page: val}})
                 await this.stAddItems({page: val, limit: 2})
+                this.isLoading = false
             },
             async createProduct(form) {
+                this.changeFormActive(false);
+                this.isLoading = true;
                 await this.stAddNewProduct(form)
+            },
+            async deleteProduct(id) {
+                this.isLoading = true;
+                await this.stDeleteProduct(id)
+                this.$router.push({name: 'index', query: {page: 1}})
+
+            },
+            goTo(id) {
+                this.$router.push(`/${id}`)
             }
         },
     }
@@ -71,6 +83,16 @@
 
 <style lang="scss" scoped>
     .page-main {
+        display: flex;
+        width: 100%;
+
+        .wrap {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+
+        }
+
         &__title {
             text-align: center;
             padding: $gutter 0;
@@ -78,16 +100,29 @@
 
 
         }
+
         &__content {
-            overflow: hidden;
             position: relative;
             display: flex;
-            justify-content: space-between;
+            align-items: flex-start;
+            flex-grow: 1;
+            padding: $gutter / 2;
+            overflow: hidden;
+            justify-content: center;
+
             &-product {
+                margin: 0 $gutter / 2;
                 width: 100%;
-                max-width: 48%;
+                max-width: 30%;
             }
         }
+        &__mock-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
         &__pagination {
             margin-top: $gutter;
         }

@@ -86,11 +86,8 @@ function transliterate(value) {
 
 module.exports.all = async (req, res) => {
     const {page, limit} = req.query
-    console.log(req.query)
     const from = Boolean(+page) ? Number(page-1) * Number(limit) : 0
     const to = Number(from) + Number(limit)
-    console.log(page)
-    console.log(to)
     const items = await readFile(filePath)
     const data = items.reverse().slice(from, to)
     res.status(200).json({message: 'Товары получены', data, totalNumber: items.length,  isSuccess: true})
@@ -112,5 +109,64 @@ module.exports.add = async (req, res) => {
     } catch (e) {
         console.log(e)
         res.status(404).json({message: 'Продукт не создан', isSuccess: false})
+    }
+}
+
+module.exports.del = async (req, res) => {
+    const id = req.params.id
+    console.log(id)
+        try {
+            const response = await readFile(filePath)
+            if (response) {
+                let updatedFile = response.filter(item => String(item.id) !== String(id))
+                // console.log(updatedFile)
+                const updated = await updateFile(filePath, updatedFile)
+                updated ?
+                    res.status(200).json({message: 'Продукт удален', isSuccess: true}) :
+                    res.status(404).json({message: 'Продукт не удален', isSuccess: false})
+            }
+            else {
+                res.status(404).json({message: 'Продукт не удален', isSuccess: false})
+            }
+        } catch (e) {
+            console.log(e)
+            res.status(404).json({message: 'Продукт не удален', isSuccess: false})
+        }
+}
+
+module.exports.productById = async (req, res) => {
+    try {
+        const items = await readFile(filePath)
+        const data = items.find(item => item.translate_title === req.params.id)
+        res.status(200).json({message: 'Товары получены', data,  isSuccess: true})
+    }
+    catch (e) {
+        res.status(404).json({message: 'Товар не получен', isSuccess: false})
+    }
+}
+
+module.exports.update = async (req, res) => {
+    const id = req.params.id
+    try {
+        const response = await readFile(filePath)
+        if (response) {
+            let updFile = response.find(item => String(item.id) === String(id))
+            let index = response.findIndex(item => String(item.id) === String(id))
+            updFile.title = req.body.title
+            updFile.translate_title = transliterate(req.body.title)
+            updFile.price = req.body.price
+            updFile.description = req.body.description
+            response.splice(index, 1, updFile)
+            const updated = await updateFile(filePath, response)
+            updated ?
+                res.status(200).json({message: 'Продукт отредактирован', isSuccess: true}) :
+                res.status(404).json({message: 'Продукт не отредактирован', isSuccess: false})
+        }
+        else {
+            res.status(404).json({message: 'Продукт не отредактирован', isSuccess: false})
+        }
+    } catch (e) {
+        console.log(e)
+        res.status(404).json({message: 'Продукт не отредактирован', isSuccess: false})
     }
 }

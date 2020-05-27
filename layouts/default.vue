@@ -4,7 +4,9 @@
             <SectionHeader/>
         </header>
         <main class="main-layout__content">
-            <nuxt />
+            <transition mode="out-in" name="layout-fade">
+                <nuxt/>
+            </transition>
         </main>
         <footer class="main-layout__footer">
             <SectionFooter/>
@@ -15,6 +17,7 @@
 <script>
     import SectionHeader from '@/components/sections/header'
     import SectionFooter from '@/components/sections/footer'
+
     export default {
         components: {
             SectionHeader,
@@ -26,10 +29,12 @@
 
 <style lang="scss" scoped>
     .main-layout {
-        height: 100vh;
         display: flex;
         flex-direction: column;
+        height: 100vh;
+
         &__content {
+            display: flex;
             flex-grow: 1;
         }
     }

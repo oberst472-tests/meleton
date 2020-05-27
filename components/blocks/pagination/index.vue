@@ -2,7 +2,7 @@
     <div class="block-pagination">
         <ul class="block-pagination__list" v-if="isPaginationShow">
             <li
-                :class="{'block-pagination__item--disabled': false}"
+                :class="{'block-pagination__item--disabled': isPrevDisabled}"
                 @click="goToNextOrPrev('prev')"
                 class="block-pagination__item block-pagination__item--prev"
             >
@@ -19,7 +19,7 @@
                 {{ item }}
             </li>
             <li
-                :class="{'block-pagination__item--disabled': false}"
+                :class="{'block-pagination__item--disabled': isNextDisabled}"
                 @click="goToNextOrPrev('next')"
                 class="block-pagination__item block-pagination__item--next"
             >
@@ -39,38 +39,28 @@
         },
         computed: {
             pages() {
-                return !!this.length % 2 ? (this.length - 1) / 2 + 1 : this.length
-                // let lol = this.length % 2
-                // if(lol) {
-                //     return this.length / 2 + lol
-                // }
-                // else {
-                //     return this.length / 2
-                // }
+                return Boolean(Number(this.length % 2)) ? (this.length - 1) / 2 + 1 : this.length / 2
             },
-            isPaginationShow () {
-                return this.length ? this.length > 1 : false
+            isPaginationShow() {
+                return this.length ? this.length > 2 : false
             },
-            activePage () {
+            activePage() {
                 return this.$route.query.page || 1
             },
-            // isPrevDisabled () {
-            //     return this.length ? this.length.page === 1 : false
-            // },
-            // isNextDisabled () {
-            //     return this.length ? this.length.page === this.length.total_pages : false
-            // }
+            isPrevDisabled() {
+                return this.$route.query.page ? this.$route.query.page === 1 : true
+            },
+            isNextDisabled() {
+                return this.$route.query.page ? this.$route.query.page === this.pages : false
+                // return this.length ? this.length.page === this.length.total_pages : false
+            }
         },
         methods: {
-            goToPage (count) {
+            goToPage(count) {
                 this.$emit('click', count)
             },
-            goToNextOrPrev (payload) {
-                let val = ''
-                if (this.length) {
-                    payload === 'prev' ? val = this.length - 1 : val = this.length + 1
-                }
-                this.$emit('click', val)
+            goToNextOrPrev(payload) {
+                payload === 'prev' ? this.$emit('click', this.activePage - 1) : this.$emit('click', this.activePage + 1)
             }
         }
     }
@@ -80,6 +70,7 @@
     .block-pagination {
         display: flex;
         justify-content: center;
+
         &__list {
             margin: 0;
             padding: 0;
@@ -88,29 +79,34 @@
             color: $color--text-light;
             border-radius: 5px;
         }
+
         &__item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
             height: 40px;
             padding: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            border-bottom: 2px solid $color--primary;
             list-style: none;
             cursor: pointer;
             user-select: none;
             transition: border 0.3s ease;
-            border-bottom: 2px solid $color--primary;
-            width: 40px;
+
             &:hover {
                 color: darken($color--accent, 10%);
                 border-color: darken($color--accent, 10%);
             }
+
             &:active {
                 opacity: 0.7;
             }
+
             &--prev,
             &--next {
-                font-size: 0;
                 position: relative;
+                font-size: 0;
+
                 &:before {
                     height: 10px;
                     position: absolute;
@@ -120,34 +116,41 @@
                     transform: translate(-20%, -50%) rotate(45deg);
                     width: 10px;
                 }
+
                 &:hover {
                     &:before {
                         border-color: darken($color--accent, 10%);
                     }
                 }
             }
+
             &--prev {
-                font-size: 0;
                 position: relative;
+                font-size: 0;
+
                 &:before {
                     transform: translate(-20%, -50%) rotate(45deg);
                     border-bottom: 2px solid $color--text;
                     border-left: 2px solid $color--text;
                 }
             }
+
             &--next {
-                font-size: 0;
                 position: relative;
+                font-size: 0;
+
                 &:before {
                     transform: translate(-80%, -50%) rotate(45deg);
                     border-top: 2px solid $color--text;
                     border-right: 2px solid $color--text;
                 }
             }
+
             &--active {
                 color: darken($color--accent, 10%);
                 border-color: darken($color--accent, 10%);
             }
+
             &--disabled {
                 pointer-events: none;
                 opacity: 0.4;

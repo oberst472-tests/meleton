@@ -1,11 +1,11 @@
 <template>
     <div class="section-footer">
-       <div class="wrap">
-           <div class="section-footer__content">
-               <span>&copy;2020</span>
-               <span>Не пытайтесь повторить!</span>
-           </div>
-       </div>
+        <div class="wrap">
+            <div class="section-footer__content">
+                <span>&copy;2020</span>
+                <span>Не пытайтесь повторить!</span>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -17,6 +17,7 @@
     .section-footer {
         margin-top: $gutter * 2;
         background-color: darken($color--primary, 5%);
+
         &__content {
             display: flex;
             justify-content: space-between;

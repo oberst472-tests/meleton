@@ -1,7 +1,9 @@
 <template>
-    <div class="ui-loading">
-        <span></span>
-    </div>
+    <transition name="fade">
+        <div class="ui-loading">
+            <span></span>
+        </div>
+    </transition>
 </template>
 
 <script>
@@ -14,14 +16,13 @@
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 9;
+            z-index: 200;
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
             height: 100%;
             background-color: rgba($color--base, 1);
-            pointer-events: none;
 
             span {
                 position: relative;
@@ -47,6 +48,13 @@
                     animation: pulse 1s alternate ease-in-out infinite;
                 }
             }
+        }
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 0.3s ease;
+        }
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
+            transition-duration: 0.5s;
         }
 
 </style>

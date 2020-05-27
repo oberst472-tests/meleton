@@ -37,17 +37,17 @@
 
 <style scoped lang="scss">
     .block-form {
-        width: 100%;
-        height: 100vh;
         position: fixed;
         top: 0;
         left: 0;
+        z-index: 100;
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        z-index: 100;
-        cursor: pointer;
+        width: 100%;
+        height: 100vh;
         background-color: rgba(24, 33, 57, 0.6);
+        cursor: pointer;
 
         &__form {
             z-index: 99;
@@ -62,13 +62,14 @@
         }
 
         &__item {
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.16);
-            border: 1px solid rgba(255, 255, 255, 0.16);
-            color: $color--text;
             padding: $gutter / 2;
-            outline: none;
             font-family: $family--default;
+            font-size: 14px;
+            color: $color--text;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 5px;
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.16);
             resize: none;
 
             &::placeholder {

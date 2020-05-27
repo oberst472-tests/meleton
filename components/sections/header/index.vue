@@ -6,7 +6,7 @@
                     Назад
                 </UiBtn>
                 <span class="section-header__logo">logo</span>
-                <div class="section-header__options">
+                <div class="section-header__options" v-if="$route.name === 'index'">
                     <UiBtn theme="positive" size="medium" @click="changeFormActive(true)">Добавить товар</UiBtn>
                 </div>
             </div>
@@ -16,6 +16,7 @@
 
 <script>
     import {mapActions} from 'vuex'
+
     export default {
         methods: {
             ...mapActions('products', ['changeFormActive'])
@@ -28,17 +29,18 @@
         background-color: darken($color--primary, 5%);
 
         &__logo {
+            margin: 0;
             @include adaptiveFont(15px, 20px);
-            margin: 0 0 0 $gutter / 2;
+            transition-duration: 0.5s;
         }
 
         &__content {
-            padding: $gutter / 2 0;
             display: flex;
             align-items: center;
+            padding: $gutter / 2 $gutter;
             @include md() {
-                padding: $gutter / 2 0;
                 justify-content: space-between;
+                padding: $gutter / 2 $gutter;
             }
         }
 
