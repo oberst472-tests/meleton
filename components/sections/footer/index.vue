@@ -15,6 +15,7 @@
 
 <style scoped lang="scss">
     .section-footer {
+        margin-top: $gutter * 2;
         background-color: darken($color--primary, 5%);
         &__content {
             display: flex;

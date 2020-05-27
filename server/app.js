@@ -19,7 +19,7 @@ app.use(bodyParser.json())
 
 app.use(allowCrossDomain)
 
-app.use('/api/products/all', productsRoutes)
+app.use('/api/products/', productsRoutes)
 
 
 module.exports = app

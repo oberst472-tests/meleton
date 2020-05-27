@@ -39,7 +39,14 @@
         },
         computed: {
             pages() {
-                return this.length / 2
+                return !!this.length % 2 ? (this.length - 1) / 2 + 1 : this.length
+                // let lol = this.length % 2
+                // if(lol) {
+                //     return this.length / 2 + lol
+                // }
+                // else {
+                //     return this.length / 2
+                // }
             },
             isPaginationShow () {
                 return this.length ? this.length > 1 : false

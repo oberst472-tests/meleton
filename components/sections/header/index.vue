@@ -7,7 +7,7 @@
                 </UiBtn>
                 <span class="section-header__logo">logo</span>
                 <div class="section-header__options">
-                    <UiBtn theme="positive" size="medium">Добавить товар</UiBtn>
+                    <UiBtn theme="positive" size="medium" @click="changeFormActive(true)">Добавить товар</UiBtn>
                 </div>
             </div>
         </div>
@@ -15,7 +15,12 @@
 </template>
 
 <script>
-    export default {}
+    import {mapActions} from 'vuex'
+    export default {
+        methods: {
+            ...mapActions('products', ['changeFormActive'])
+        }
+    }
 </script>
 
 <style lang="scss" scoped>
