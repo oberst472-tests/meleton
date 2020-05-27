@@ -5,9 +5,9 @@
                 <UiBtn @click="$router.push({name: 'index'})" circle size="small" theme="accent" icon="home" v-if="$route.name !== 'index'" title="На главную">
                     Назад
                 </UiBtn>
-                <h1 class="section-header__title">{{ $route.meta.title }}</h1>
+                <span class="section-header__logo">logo</span>
                 <div class="section-header__options">
-                    <slot/>
+                    <UiBtn theme="positive" size="medium">Добавить товар</UiBtn>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
     .section-header {
         background-color: darken($color--primary, 5%);
 
-        &__title {
+        &__logo {
             @include adaptiveFont(15px, 20px);
             margin: 0 0 0 $gutter / 2;
         }

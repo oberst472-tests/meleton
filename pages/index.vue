@@ -5,20 +5,20 @@
             <div class="page-main__content">
                 <BlockProduct class="page-main__content-product" v-for="item in items" :key="item.index" :info="item"/>
             </div>
-<!--            <BlockPagination-->
-<!--                class="view-users__pagination"-->
-<!--                :info="items.length"-->
-<!--                @click="goToPage"-->
-<!--            />-->
+            <BlockPagination
+                class="page-main__pagination"
+                :length="totalNumber"
+                @click="goToPage"
+            />
         </div>
     </section>
 </template>
 
 <script>
     import products from '@/mocks/products'
-    import {mapState} from 'vuex'
+    import {mapState, mapActions} from 'vuex'
     import BlockProduct from '@/components/blocks/product'
-    // import BlockPagination from '@/components/blocks/pagination'
+    import BlockPagination from '@/components/blocks/pagination'
 
     export default {
         head() {
@@ -28,10 +28,15 @@
         },
         components: {
             BlockProduct,
-            // BlockPagination
+            BlockPagination
         },
-        fetch ({store}) {
-            store.dispatch('products/stAddItems', products)
+        async fetch (context) {
+            let from = context.query.page || 0
+            try {
+                await context.store.dispatch('products/stAddItems', {from, limit: 2})
+            } catch (e) {
+                console.log(e)
+            }
         },
         data() {
             return {
@@ -39,10 +44,14 @@
             }
         },
         computed: {
-            ...mapState('products', ['items']),
+            ...mapState('products', ['items', 'totalNumber']),
         },
         methods: {
-
+            ...mapActions('products', ['stAddItems']),
+            async goToPage(val) {
+                this.$router.push({name: 'index', query: {page: val}})
+                await this.stAddItems({from: val, limit: 2})
+            }
         }
     }
 </script>
@@ -63,6 +72,9 @@
                 width: 100%;
                 max-width: 48%;
             }
+        }
+        &__pagination {
+            margin-top: $gutter;
         }
     }
 </style>

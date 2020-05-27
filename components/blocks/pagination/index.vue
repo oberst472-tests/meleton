@@ -2,7 +2,7 @@
     <div class="block-pagination">
         <ul class="block-pagination__list" v-if="isPaginationShow">
             <li
-                :class="{'block-pagination__item--disabled': isPrevDisabled}"
+                :class="{'block-pagination__item--disabled': false}"
                 @click="goToNextOrPrev('prev')"
                 class="block-pagination__item block-pagination__item--prev"
             >
@@ -10,7 +10,7 @@
             </li>
 
             <li
-                :class="{'block-pagination__item--active': activePage === item}"
+                :class="{'block-pagination__item--active': Number(activePage) === index + 1}"
                 :key="index"
                 @click="goToPage(item)"
                 class="block-pagination__item"
@@ -19,7 +19,7 @@
                 {{ item }}
             </li>
             <li
-                :class="{'block-pagination__item--disabled': isNextDisabled}"
+                :class="{'block-pagination__item--disabled': false}"
                 @click="goToNextOrPrev('next')"
                 class="block-pagination__item block-pagination__item--next"
             >
@@ -32,27 +32,27 @@
 <script>
     export default {
         props: {
-            info: {
+            length: {
                 type: [Number, String],
                 default: 0
             }
         },
         computed: {
-            pages () {
-                return this.info ? Number(this.info.total_pages) : 0
+            pages() {
+                return this.length / 2
             },
             isPaginationShow () {
-                return this.info ? this.info.total_pages > 1 : false
+                return this.length ? this.length > 1 : false
             },
             activePage () {
-                return this.info ? this.info.page : 1
+                return this.$route.query.page || 1
             },
-            isPrevDisabled () {
-                return this.info ? this.info.page === 1 : false
-            },
-            isNextDisabled () {
-                return this.info ? this.info.page === this.info.total_pages : false
-            }
+            // isPrevDisabled () {
+            //     return this.length ? this.length.page === 1 : false
+            // },
+            // isNextDisabled () {
+            //     return this.length ? this.length.page === this.length.total_pages : false
+            // }
         },
         methods: {
             goToPage (count) {
@@ -60,8 +60,8 @@
             },
             goToNextOrPrev (payload) {
                 let val = ''
-                if (this.info) {
-                    payload === 'prev' ? val = this.info.page - 1 : val = this.info.page + 1
+                if (this.length) {
+                    payload === 'prev' ? val = this.length - 1 : val = this.length + 1
                 }
                 this.$emit('click', val)
             }
@@ -94,8 +94,8 @@
             border-bottom: 2px solid $color--primary;
             width: 40px;
             &:hover {
-                color: darken($color--primary, 10%);
-                border-color: darken($color--primary, 10%);
+                color: darken($color--accent, 10%);
+                border-color: darken($color--accent, 10%);
             }
             &:active {
                 opacity: 0.7;
@@ -115,7 +115,7 @@
                 }
                 &:hover {
                     &:before {
-                        border-color: darken($color--primary, 10%);
+                        border-color: darken($color--accent, 10%);
                     }
                 }
             }
@@ -138,8 +138,8 @@
                 }
             }
             &--active {
-                color: darken($color--primary, 10%);
-                border-color: darken($color--primary, 10%);
+                color: darken($color--accent, 10%);
+                border-color: darken($color--accent, 10%);
             }
             &--disabled {
                 pointer-events: none;
