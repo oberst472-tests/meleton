@@ -1,7 +1,13 @@
 <template>
     <section class="page-main">
         <div class="wrap">
-            <h1 class="page-main__title">{{ title }}</h1>
+            <div class="page-main__box">
+                <h1 class="page-main__title">{{ title }}</h1>
+                <div class="page-main__sort">
+                    <BlockSort @click="sortDate" :active="sort === 'date'" :direction="sortDirection">По дате</BlockSort>
+                    <BlockSort @click="sortPrice" :active="sort === 'price'" :direction="sortDirection">По цене</BlockSort>
+                </div>
+            </div>
             <div class="page-main__content" v-if="items.length">
                 <UiLoading v-if="isLoading"/>
                 <BlockProduct :info="item" :key="item.index" @delete="deleteProduct" @goToPage="goTo" class="page-main__content-product" v-for="item in items"/>
@@ -25,6 +31,7 @@
     import BlockProduct from '@/components/blocks/product'
     import BlockPagination from '@/components/blocks/pagination'
     import BlockForm from '@/components/blocks/form'
+    import BlockSort from '@/components/blocks/sort'
 
     export default {
         head() {
@@ -35,12 +42,13 @@
         components: {
             BlockProduct,
             BlockPagination,
-            BlockForm
+            BlockForm,
+            BlockSort
         },
         async fetch({store, query}) {
             let page = query.page || 1;
             try {
-                await store.dispatch('products/stAddItems', {page, limit: 2})
+                await store.dispatch('products/stAddItems', {page})
             } catch (e) {
                 console.log(e)
             } finally {
@@ -53,14 +61,14 @@
             }
         },
         computed: {
-            ...mapState('products', ['items', 'totalNumber', 'isFormActive']),
+            ...mapState('products', ['items', 'totalNumber', 'isFormActive', 'sort', 'sortDirection']),
         },
         methods: {
-            ...mapActions('products', ['stAddItems', 'changeFormActive', 'stAddNewProduct', 'stDeleteProduct']),
+            ...mapActions('products', ['stAddItems', 'changeFormActive', 'stAddNewProduct', 'stDeleteProduct', 'sortPrice', 'sortDate']),
             async goToPage(val) {
                 this.isLoading = true;
                 this.$router.push({name: 'index', query: {page: val}})
-                await this.stAddItems({page: val, limit: 2})
+                await this.stAddItems({page: val})
                 this.isLoading = false
             },
             async createProduct(form) {
@@ -76,7 +84,8 @@
             },
             goTo(id) {
                 this.$router.push(`/${id}`)
-            }
+            },
+
         },
     }
 </script>
@@ -91,6 +100,14 @@
             flex-direction: column;
             width: 100%;
 
+        }
+        &__box {
+            display: flex;
+            width: 588px;
+            margin-left: auto;
+            margin-right: auto;
+            align-items: center;
+            justify-content: space-between;
         }
 
         &__title {

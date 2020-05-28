@@ -1,9 +1,11 @@
 import {apiGetAll, apiAddNewProduct, apiDeleteProduct, apiGetProductById, apiUpdateProduct} from '~/api/api'
 export const state = () => ({
-    items: [],
-    product: null,
+    items: [], //продукты
+    product: null, //детальная инфо о продукте
     totalNumber: 0, //общее колличество товаров
-    isFormActive: false
+    isFormActive: false,
+    sort: 'date',
+    sortDirection: 'top'
 })
 
 export const mutations = {
@@ -21,12 +23,18 @@ export const mutations = {
     },
     setProduct(state, payload) {
         state.product = payload
+    },
+    setSort(state, payload) {
+        state.sort = payload
+        state.sortDirection === 'top' ? state.sortDirection = 'bottom' : state.sortDirection = 'top'
     }
-
 }
 
 export const actions = {
-    async stAddItems({commit}, query = {page: 1, limit: 2}) {
+    async stAddItems({state, commit}, query = {page: 1}) {
+        query.limit = 2
+        query.sort = state.sort
+        query.sortDirection = state.sortDirection
         try {
             const data = await apiGetAll(query)
             commit('addItems', data.data)
@@ -73,6 +81,14 @@ export const actions = {
             console.log(e)
             return false
         }
+    },
+    sortPrice({commit, dispatch}) {
+        commit('setSort', 'price')
+        dispatch('stAddItems')
+    },
+    sortDate({commit, dispatch}) {
+        commit('setSort', 'date')
+        dispatch('stAddItems')
     },
     changeFormActive({commit}, payload) {
         commit('setFormActive', payload)

@@ -85,12 +85,30 @@ function transliterate(value) {
 
 
 module.exports.all = async (req, res) => {
-    const {page, limit} = req.query
-    const from = Boolean(+page) ? Number(page-1) * Number(limit) : 0
-    const to = Number(from) + Number(limit)
-    const items = await readFile(filePath)
-    const data = items.reverse().slice(from, to)
-    res.status(200).json({message: 'Товары получены', data, totalNumber: items.length,  isSuccess: true})
+    try {
+        const {page, limit, sort, sortDirection} = req.query
+
+        const from = Boolean(+page) ? Number(page-1) * Number(limit) : 0
+        const to = Number(from) + Number(limit)
+
+        const items = await readFile(filePath)
+        let data = []
+        if(sort === 'date') {
+            sortDirection === 'top' ?
+                data = items.reverse().slice(from, to) :
+                data = items.slice(from, to)
+        }
+        else {
+            sortDirection === 'top' ?
+                data = items.sort((a, b) => b.price - a.price).slice(from, to) :
+                data = items.sort((a, b) => a.price - b.price).slice(from, to)
+        }
+        res.status(200).json({message: 'Товары получены', data, totalNumber: items.length,  isSuccess: true})
+    }
+    catch (e) {
+        console.log(e)
+        res.status(404).json({message: 'Товары не получены', isSuccess: false})
+    }
 }
 
 module.exports.add = async (req, res) => {
