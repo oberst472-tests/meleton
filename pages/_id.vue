@@ -44,6 +44,7 @@
         },
         methods: {
             ...mapActions('products', ['stUpdateProduct']),
+            ...mapActions('messages', ['message']),
             async send() {
                 this.isLoading = true;
                 const data = {
@@ -54,6 +55,7 @@
                 };
                 await this.stUpdateProduct(data);
                 this.isLoading = false
+                this.message(['positive', 'Продукт отредактирован'])
             }
         },
         mounted() {
@@ -88,6 +90,7 @@
             border-radius: 5px;
             background-color: lighten($color--base, 10%);
             resize: none;
+            outline: 0;
         }
 
         &__btn {

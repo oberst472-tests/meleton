@@ -2,7 +2,7 @@
     <div class="ui-message">
         <div class="ui-message__items">
             <transition-group name="list">
-                <div class="ui-message__item" :class="`ui-message__item--${item.status}`" v-for="(item, index) in items" :key="`item-${index}`">
+                <div class="ui-message__item" :class="`ui-message__item--${item.status}`" v-for="(item, index) in messages" :key="`item-${index}`">
                     {{ item.value }}
                 </div>
             </transition-group>
@@ -20,13 +20,13 @@
             }
         },
         computed: {
-            ...mapState('message', ['items'])
+            ...mapState('messages', ['messages'])
         },
         methods: {
-            ...mapActions('message', ['deleteMessage'])
+            ...mapActions('messages', ['deleteMessage'])
         },
         watch: {
-            items(val) {
+            messages(val) {
                 if (val.length) {
                     clearTimeout(this.timeout);
                     this.timeout = setTimeout(() => {
@@ -44,7 +44,7 @@
     .ui-message {
         position: fixed;
         bottom: 0;
-        left: 0;
+        right: 0;
         z-index: 50;
         width: 300px;
         height: 100vh;
@@ -68,13 +68,13 @@
             padding: $gutter / 3;
 
             font-size: 12px;
-            border-top-right-radius: 5px;
-            border-bottom-right-radius: 5px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
             text-align: center;
             @include md() {
-                min-height: 80px;
+                min-height: 10px;
                 margin-top: $gutter / 2;
-                padding: $gutter;
+                padding: $gutter / 2;
                 font-size: 14px;
             }
 
@@ -95,7 +95,7 @@
 
         .list-enter, .list-leave-to {
             opacity: 0;
-            transform: translateX(-150px);
+            transform: translateX(150px);
         }
     }
 </style>

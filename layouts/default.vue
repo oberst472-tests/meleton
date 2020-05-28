@@ -11,6 +11,7 @@
         <footer class="main-layout__footer">
             <SectionFooter/>
         </footer>
+        <UiMessage/>
     </section>
 </template>
 

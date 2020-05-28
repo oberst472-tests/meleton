@@ -4,8 +4,8 @@
             <div class="page-main__box">
                 <h1 class="page-main__title">{{ title }}</h1>
                 <div class="page-main__sort">
-                    <BlockSort @click="sortDate" :active="sort === 'date'" :direction="sortDirection">По дате</BlockSort>
-                    <BlockSort @click="sortPrice" :active="sort === 'price'" :direction="sortDirection">По цене</BlockSort>
+                    <BlockSort :active="sort === 'date'" :direction="sortDirection" @click="sortDate">По дате</BlockSort>
+                    <BlockSort :active="sort === 'price'" :direction="sortDirection" @click="sortPrice">По цене</BlockSort>
                 </div>
             </div>
             <div class="page-main__content" v-if="items.length">
@@ -65,6 +65,7 @@
         },
         methods: {
             ...mapActions('products', ['stAddItems', 'changeFormActive', 'stAddNewProduct', 'stDeleteProduct', 'sortPrice', 'sortDate']),
+            ...mapActions('messages', ['message']),
             async goToPage(val) {
                 this.isLoading = true;
                 this.$router.push({name: 'index', query: {page: val}})
@@ -78,6 +79,7 @@
                 await this.stAddItems({page: 1})
                 this.$router.push({name: 'index', query: {page: 1}})
                 this.isLoading = false;
+                this.message(['positive', 'Продукт создан'])
             },
             async deleteProduct(id) {
                 this.isLoading = true;
@@ -85,6 +87,7 @@
                 await this.stAddItems({page: 1})
                 this.$router.push({name: 'index', query: {page: 1}})
                 this.isLoading = false;
+                this.message(['positive', 'Продукт удален'])
 
             },
             goTo(id) {
@@ -104,8 +107,8 @@
             display: flex;
             flex-direction: column;
             width: 100%;
-
         }
+
         &__box {
             display: flex;
             width: 588px;
@@ -119,8 +122,6 @@
             text-align: center;
             padding: $gutter 0;
             font-size: 22px;
-
-
         }
 
         &__content {
@@ -138,6 +139,7 @@
                 max-width: 30%;
             }
         }
+
         &__mock-text {
             position: absolute;
             top: 50%;
