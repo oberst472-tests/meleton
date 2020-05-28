@@ -38,6 +38,7 @@
             display: flex;
             align-items: center;
             padding: $gutter / 2 $gutter;
+            min-height: 70px;
             @include md() {
                 justify-content: space-between;
                 padding: $gutter / 2 $gutter;
