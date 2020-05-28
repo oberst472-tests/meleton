@@ -1,6 +1,6 @@
 # meleton
 
-link: <a href="https://oberst472-meleton.herokuapp.com/">https://oberst472-meleton.herokuapp.com/</a>
+site: <a href="https://oberst472-meleton.herokuapp.com/">https://oberst472-meleton.herokuapp.com/</a>
 
 ## Build Setup
 
@@ -17,6 +17,3 @@ $ npm run start
 
 # generate static project
 $ npm run generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
