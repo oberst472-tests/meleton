@@ -1,4 +1,5 @@
-import {apiGetAll, apiAddNewProduct, apiDeleteProduct, apiGetProductById, apiUpdateProduct} from '~/api/api'
+import {apiAddNewProduct, apiDeleteProduct, apiGetAll, apiGetProductById, apiUpdateProduct} from '~/api/api'
+
 export const state = () => ({
     items: [], //продукты
     product: null, //детальная инфо о продукте
