@@ -1,1 +1,1 @@
-site: https://oberst472-meleton.herokuapp.com/
+site: https://oberst472-meleton.herokuapp.com
