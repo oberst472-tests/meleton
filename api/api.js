@@ -1,6 +1,6 @@
 import customFetch from './fetch'
 
-const baseUrl = process.env.NODE_ENV === 'development' ? `http://localhost:3000` : `https://oberst472-meleton.herokuapp.com/`
+const baseUrl = process.env.NODE_ENV === 'development' ? `http://localhost:3000` : `https://oberst472-meleton.herokuapp.com`
 
 //искусственная задержка
 function timeout(ms) {
