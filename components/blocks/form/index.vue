@@ -1,9 +1,17 @@
 <template>
     <div class="block-form" @click.self="$emit('hide')">
         <form class="block-form__form" @submit.prevent="send($event)">
-            <input class="block-form__item" type="text" placeholder="Название продукта" v-model="form.title">
-            <input class="block-form__item" type="text" placeholder="Стоимость" v-model="form.price">
-            <textarea class="block-form__item" placeholder="Описание" v-model="form.description"></textarea>
+            <div class="block-form__box">
+                <input class="block-form__item" type="text" placeholder="Название продукта" v-model="form.title">
+                <span v-if="titleValid" class="block-form__box-error">Только русские буквы</span>
+            </div>
+            <div class="block-form__box">
+                <input class="block-form__item" type="text" placeholder="Стоимость" v-model="form.price">
+                <span v-if="priceValid" class="block-form__box-error">Только цифры</span>
+            </div>
+            <div class="block-form__box">
+                <textarea class="block-form__item" placeholder="Описание" v-model="form.description"></textarea>
+            </div>
             <UiBtn class="block-form__btn" theme="accent" size="default" :disabled="isDisabled">Создать продукт</UiBtn>
         </form>
     </div>
@@ -24,7 +32,16 @@
             isDisabled() {
                 return !this.form.title.length ||
                     !this.form.price.length ||
-                    !this.form.description.length
+                    !this.form.description.length ||
+                    this.priceValid ||
+                    this.titleValid
+
+            },
+            priceValid() {
+                return /[^\d]/.test(this.form.price)
+            },
+            titleValid() {
+                return /[^а-яё]+/i.test(this.form.title)
             }
         },
         methods: {
@@ -61,7 +78,39 @@
             border-bottom-right-radius: $gutter / 2;
         }
 
+        &__box {
+            width: 100%;
+            position: relative;
+            & + & {
+                margin-top: $gutter;
+            }
+            &-error {
+                position: absolute;
+                top: calc(100% + 5px);
+                left: 0;
+                background-color: $color--negative;
+                color: $color--text;
+                padding: 3px;
+                font-size: 12px;
+                border-radius: 5px;
+                text-transform: lowercase;
+                &:before {
+                    content: '';
+                    position: absolute;
+                    left: 15px;
+                    top: -3px;
+                    width: 5px;
+                    height: 5px;
+                    background-color: $color--negative;
+                    transform: rotate(45deg);
+                }
+
+            }
+
+        }
+
         &__item {
+            width: 100%;
             padding: $gutter / 2;
             font-family: $family--default;
             font-size: 14px;
@@ -81,10 +130,6 @@
                 &::placeholder {
                     color: transparent;
                 }
-            }
-
-            & + & {
-                margin-top: $gutter;
             }
         }
 

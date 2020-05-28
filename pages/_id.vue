@@ -2,10 +2,24 @@
     <section class="page-product">
         <div class="wrap">
             <h1 class="page-product__title">{{ form.title }}</h1>
-            <input class="page-product__item" type="text" v-model="form.title">
-            <input class="page-product__item" type="text" v-model="form.price">
-            <textarea class="page-product__item" type="text" v-model="form.description"></textarea>
-            <UiBtn :loading="isLoading" @click="send" class="page-product__btn" size="medium" theme="positive" type=button>
+            <div class="page-product__box">
+                <input class="page-product__item" type="text" v-model="form.title">
+                <span v-if="titleValid" class="page-product__box-error">Только русские буквы</span>
+            </div>
+            <div class="page-product__box">
+                <input class="page-product__item" type="text" v-model="form.price">
+                <span v-if="priceValid" class="page-product__box-error">Только цифры</span>
+            </div>
+            <div class="page-product__box">
+                <textarea class="page-product__item" type="text" v-model="form.description"></textarea>
+            </div>
+            <UiBtn :loading="isLoading"
+                   @click="send"
+                   class="page-product__btn" size="medium"
+                   theme="positive"
+                   type=button
+                   :disabled="isDisabled"
+            >
                 Отредактировать
             </UiBtn>
         </div>
@@ -41,6 +55,20 @@
         },
         computed: {
             ...mapState('products', ['product']),
+            isDisabled() {
+                return !this.form.title.length ||
+                    !this.form.price.length ||
+                    !this.form.description.length ||
+                    this.priceValid ||
+                    this.titleValid
+
+            },
+            priceValid() {
+                return /[^\d]/.test(this.form.price)
+            },
+            titleValid() {
+                return /[^а-яё]+/i.test(this.form.title)
+            }
         },
         methods: {
             ...mapActions('products', ['stUpdateProduct']),
@@ -77,10 +105,37 @@
             flex-direction: column;
             width: 100%;
         }
+        &__box {
+            width: 300px;
+            position: relative;
+                margin-top: $gutter;
+            &-error {
+                position: absolute;
+                top: calc(100% + 5px);
+                left: 0;
+                background-color: $color--negative;
+                color: $color--text;
+                padding: 3px;
+                font-size: 12px;
+                border-radius: 5px;
+                text-transform: lowercase;
+                &:before {
+                    content: '';
+                    position: absolute;
+                    left: 15px;
+                    top: -3px;
+                    width: 5px;
+                    height: 5px;
+                    background-color: $color--negative;
+                    transform: rotate(45deg);
+                }
+
+            }
+
+        }
 
         &__item {
             width: 300px;
-            margin-top: $gutter;
             padding: $gutter / 2;
             font-family: $family--default;
             font-size: 14px;
