@@ -73,7 +73,6 @@ export const actions = {
         }
     },
     async stUpdateProduct({commit, dispatch}, form) {
-        console.log(form)
         try {
             await apiUpdateProduct(form)
             return true

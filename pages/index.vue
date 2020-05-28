@@ -75,11 +75,14 @@
                 this.changeFormActive(false);
                 this.isLoading = true;
                 await this.stAddNewProduct(form)
+                await this.stAddItems({page: 1})
+                this.$router.push({name: 'index', query: {page: 1}})
                 this.isLoading = false;
             },
             async deleteProduct(id) {
                 this.isLoading = true;
                 await this.stDeleteProduct(id)
+                await this.stAddItems({page: 1})
                 this.$router.push({name: 'index', query: {page: 1}})
                 this.isLoading = false;
 

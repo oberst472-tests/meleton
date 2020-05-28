@@ -132,12 +132,10 @@ module.exports.add = async (req, res) => {
 
 module.exports.del = async (req, res) => {
     const id = req.params.id
-    console.log(id)
         try {
             const response = await readFile(filePath)
             if (response) {
                 let updatedFile = response.filter(item => String(item.id) !== String(id))
-                // console.log(updatedFile)
                 const updated = await updateFile(filePath, updatedFile)
                 updated ?
                     res.status(200).json({message: 'Продукт удален', isSuccess: true}) :

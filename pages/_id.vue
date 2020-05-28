@@ -39,11 +39,6 @@
         },
         methods: {
             ...mapActions('products', ['stUpdateProduct']),
-            lol(e) {
-                console.log(444);
-                console.log(e.target.value);
-                this.form.title = e.target.value
-            },
             async send() {
                 this.isLoading = true;
                 const data = {
