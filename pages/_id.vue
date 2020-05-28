@@ -16,6 +16,11 @@
     import {mapActions, mapState} from 'vuex'
 
     export default {
+        head() {
+            return {
+                title: this.form.title
+            }
+        },
         async fetch({store, params}) {
             try {
                 await store.dispatch('products/stGetProductById', params.id)
