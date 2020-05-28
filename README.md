@@ -1,6 +1,6 @@
-# meleton-purch
+# meleton
 
-> My extraordinary Nuxt.js project
+link: <a href="https://oberst472-meleton.herokuapp.com/">https://oberst472-meleton.herokuapp.com/</a>
 
 ## Build Setup
 
